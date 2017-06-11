@@ -6,6 +6,9 @@
     define("DB_DATABASE", "auctions_db");
 
     // session
-    define("SESSION_TIMEOUT", 60); //seconds
+    define("SESSION_TIMEOUT", 600); //seconds (2*60)
+
+    // thr
+    define("MIN_THR", 1.00);
 ?>
 

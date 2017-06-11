@@ -1,8 +1,5 @@
 <?php
 
-    // TODO 
-    // THR_user_email 
-
     function sanitize_string($var) {
         $var = strip_tags($var);
         $var = htmlentities($var);
@@ -29,6 +26,218 @@
             redirect_with_message("index.php", "d", $err_msg);
 
         return $connection;
+    }
+
+    function check_new_user($email){
+        $success = true;
+        $err_msg = "";
+
+        $connection = connect_to_database();
+        
+        $email = sanitize_string($email);
+        $email = mysqli_real_escape_string($connection, $email);
+
+        $sql_statement = "select * from auctions_user where email = '$email'";
+
+        try{
+            if ( !($result = mysqli_query($connection, $sql_statement)) )
+                throw new Exception("Problems while checking new user, please register again.");
+        }catch (Exception $e){
+            $success = false;
+            $err_msg = $e->getMessage();
+        }
+
+        $rows = $result->num_rows;
+
+        mysqli_free_result($result);
+        mysqli_close($connection);
+
+        if ( !$success )
+            redirect_with_message("auth_login.php", "d", $err_msg);
+
+        if ( $rows == 1 )
+            redirect_with_message("auth_login.php", "w", "Email already used.");
+    }
+
+    function insert_new_user($email, $password){
+        $success = true;
+        $err_msg = "";
+
+        $connection = connect_to_database();
+
+        $password = sanitize_string($password);
+        $password = mysqli_real_escape_string($connection, $password);
+
+        // TODO make in unique transaction
+        
+        $sql_statement = "insert into auctions_user(email, pw) values('$email', md5('$password'))";
+
+        try{
+            if ( !mysqli_query($connection, $sql_statement) )
+                throw new Exception("Problems while registering new user (phase 1), please register again.");
+        }catch (Exception $e){
+            $success = false;
+            $err_msg = $e->getMessage();
+        }
+
+        if ( $success ){
+            $sql_statement = "insert into auctions_thr(email, thr_value) values('$email', 0)";
+
+            try{
+                if ( !mysqli_query($connection, $sql_statement) )
+                    throw new Exception("Problems while registering new user (phase 2), please register again.");
+            }catch (Exception $e){
+                $success = false;
+                $err_msg = $e->getMessage();
+            }
+
+        }
+
+        mysqli_close($connection);
+
+        if ( !$success )
+            redirect_with_message("auth_login.php", "d", $err_msg);
+    }
+
+    function get_max_bid(){
+        $success = true;
+        $err_msg = "";
+
+        $connection = connect_to_database();
+
+        $sql_statement = 
+            "select * from auctions_thr order by thr_value";
+
+        try{
+            if ( !($result = mysqli_query($connection, $sql_statement)) )
+                throw new Exception("Problems while retrieving max bid.");
+        }catch (Exception $e){
+            $success = false;
+            $err_msg = $e->getMessage();
+        }
+
+        if ( !$success)
+            redirect_with_message("index.php", "d", $err_msg);
+
+        $num_rows = $result->num_rows;
+
+        if ( $num_rows == 0 ){
+            $max_thr = MIN_THR;
+            $thr_user_email = "No one has already bidden";
+        }
+        else if ( $num_rows == 1 ){
+            $row = mysqli_fetch_assoc($result);
+
+            if ( $row['thr_value'] == 0 ){
+                $max_thr = MIN_THR;
+                $thr_user_email = "No one has already bidden";
+            }
+            else{
+                $max_thr = $row['thr_value'];
+                $thr_user_email = $row['email'];
+            }
+        }
+        else{
+            $i = 0;
+            $first_row = "";
+            $second_row = "";
+
+            while($row = mysqli_fetch_assoc($result)){
+                if ( $i == 0)
+                    $first_row = $row;
+                if ( $i == 1){
+                    $second_row = $row;
+                    break;
+                }
+
+                $i++;
+            }
+
+            if ($second_row['thr_value'] > 0){
+                $max_thr = $second_row['thr_value'];
+                $thr_user_email = $second_row['email'];
+            }
+            else if ($first_row['thr_value'] > 0){
+                $max_thr = $first_row['thr_value'];
+                $thr_user_email = $first_row['email'];
+            }
+            else{
+                $max_thr = MIN_THR;
+                $thr_user_email = "No one has already bidden";
+            }
+
+        }
+
+        mysqli_free_result($result);
+        mysqli_close($connection);
+
+        return Array($max_thr, $thr_user_email);
+    }
+
+    function get_user_thr($username){
+        $success = true;
+        $err_msg = "";
+
+        $connection = connect_to_database();
+
+        $username = sanitize_string($username);
+        $username = mysqli_real_escape_string($connection, $username);
+        
+        $sql_statement = "select thr_value from auctions_thr where email = '$username'";
+        
+        try{
+            if ( !($result = mysqli_query($connection, $sql_statement)) )
+                throw new Exception("Problems while retrieving user thr.");
+        }catch (Exception $e){
+            $success = false;
+            $err_msg = $e->getMessage();
+        }
+
+        if ( !$success)
+            redirect_with_message("index.php", "d", $err_msg);
+
+        $row = mysqli_fetch_assoc($result);
+
+        $res = $row['thr_value'];
+
+        if ( $res == 0){
+            $res = "You have not bidden yet";
+        }
+
+        mysqli_free_result($result);
+        mysqli_close($connection);
+
+        return $res;
+    }
+
+    function update_user_thr($username, $thr_value){
+        $success = true;
+        $err_msg = "";
+
+        $connection = connect_to_database();
+
+        $username = sanitize_string($username);
+        $username = mysqli_real_escape_string($connection, $username);
+
+        $thr_value = sanitize_string($thr_value);
+        $thr_value = mysqli_real_escape_string($connection, $thr_value);
+
+        try {
+            // preparing query
+            $sql_statement="update auctions_thr set thr_value = '$thr_value' where email = '$username'";
+            
+            if ( !mysqli_query($connection, $sql_statement) )
+                throw new Exception("Problems while updating your thr.");
+
+        } catch (Exception $e) {
+            $success = false;
+            $err_msg = $e->getMessage();
+        }
+
+        mysqli_close($connection);
+
+        if( !$success )
+            redirect_with_message("index.php", "d", $err_msg);
     }
 /*
     function get_points_avg(){

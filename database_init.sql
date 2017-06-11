@@ -9,6 +9,15 @@ create table auctions_user(
 	pw varchar(255) not null,
 	primary key (email)
 );
+
+create table auctions_thr(
+    email varchar(320) not null,
+    thr_value decimal(10,2) not null,
+    primary key(email), 
+    foreign key (email) references auctions_user(email) on delete cascade
+);
+alter table auctions_thr add constraint auctions_thr_constraint check(thr_value>1);
+
 /*
 create table c_comment(
 	email varchar(320) not null,

@@ -6,8 +6,8 @@
     set_https();
     check_enabled_cookies();
 
-    $success = true;
-    $err_msg = "";
+    //$success = true;
+    //$err_msg = "";
 
     switch($_SERVER['REQUEST_METHOD']) {
         case 'GET': {
@@ -31,30 +31,11 @@
     else{
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // checking unique email
-            $connection = connect_to_database();
-            
-            $email = sanitize_string($email);
-            $email = mysqli_real_escape_string($connection, $email);
 
-            $sql_statement = "select * from auctions_user where email = '$email'";
 
-            try{
-                if ( !($result = mysqli_query($connection, $sql_statement)) )
-                    throw new Exception("Problems while checking new user, please register again.");
-            }catch (Exception $e){
-                $success = false;
-                $err_msg = $e->getMessage();
-            }
-
-            $rows = $result->num_rows;
-            mysqli_free_result($result);
-            mysqli_close($connection);
-
-            if ( !$success )
-                redirect_with_message("auth_login.php", "d", $err_msg);
-
-            if ( $rows == 1 )
-                redirect_with_message("auth_login.php", "w", "Email already used.");
+            //redirect_with_message("index.php", "i", "checking " . $email . ".");
+            check_new_user($email);
+            //redirect_with_message("index.php", "i", $email . " checked.");
 
             if ( strcmp($password, $password_repeated) == 0){
                 if( !preg_match("/[A-Za-z]+[0-9]+/", $password) ){
@@ -62,28 +43,8 @@
                 }
                 else{
                     // valid email and password
-                    $connection = connect_to_database();
 
-                    $password = sanitize_string($password);
-                    $password = mysqli_real_escape_string($connection, $password);
-                    
-                    $password_repeated = sanitize_string($password_repeated);
-                    $password_repeated = mysqli_real_escape_string($connection, $password_repeated);
-
-                    $sql_statement = "insert into auctions_user(email, pw) values('$email', md5('$password'))";
-
-                    try{
-                        if ( !mysqli_query($connection, $sql_statement) )
-                            throw new Exception("Problems while registering new user, please register again.");
-                    }catch (Exception $e){
-                        $success = false;
-                        $err_msg = $e->getMessage();
-                    }
-
-                    mysqli_close($connection);
-
-                    if ( !$success )
-                        redirect_with_message("auth_login.php", "d", $err_msg);
+                    insert_new_user($email, $password);
 
                     session_start();
                     $_SESSION['231826_user'] = $email;

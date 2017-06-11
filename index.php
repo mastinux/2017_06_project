@@ -43,6 +43,8 @@
         include 'navbar.php';
         include 'no_script_messages.html';
         manage_messages();
+        list($max_thr, $max_thr_email) = get_max_bid(); // to be implemented
+        $user_max_thr = get_user_thr($username);
     ?>
 
     <div class="col-lg-12">
@@ -96,13 +98,22 @@
             <?php if($username){ ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Set max bid
+                        Update your THR
                     </div>
                     <div class="panel-body">
-                        <div class="input-group">
-                          <span class="input-group-addon">€</span>
-                          <input type="number" class="form-control">
-                        </div>
+                        <p>Your current THR: <?php echo $user_max_thr; ?></p>
+
+                        <form method="post" action="thr_update.php">
+                            <!-- TODO check greater than current thr value by id -->
+                            <div class="input-group">
+                                <span class="input-group-addon">€</span>
+                                <input type="number" name="thr" min="<?php echo $max_bid ?>" value="<?php echo $user_max_thr + 0.01 ?>" step="0.01" class="form-control text-right">
+                                <div class="input-group-btn">
+                                   <button type="submit" class="btn btn-default">Submit</button> 
+                                </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             <? } ?>
@@ -111,11 +122,11 @@
         <div class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Highest Bid</h3>
+                    <h3 class="panel-title">Highest BID</h3>
                 </div>
                 <div class="panel-body">
-                    <p>Bid: 0</p>
-                    <p>User Email: </p>
+                    <p>BID: <?php echo $max_thr; ?> </p>
+                    <p>User: <?php echo $max_thr_email; ?> </p>
                 </div>
             </div>
         </div>
