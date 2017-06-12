@@ -41,3 +41,18 @@ function printMessage(type, msg) {
 function printCookieDisabledMessage() {
     printMessage('warning', 'Cookies disabled, to use this site you have to enable them.')
 }
+
+function check_thr(){
+    var new_value = document.getElementById("user_input").value;
+    var max_bid = document.getElementById("max_bid").value;
+
+    if (new_value <= max_bid){
+        printMessage("warning", "Your new THR must be greater than max BID.");
+        new_value = parseFloat(max_bid) + 0.01;
+        document.getElementById("user_input").value = new_value;
+
+        return false;
+    }
+    else
+        return true;
+}

@@ -81,7 +81,7 @@
         }
 
         if ( $success ){
-            $sql_statement = "insert into auctions_thr(email, thr_value) values('$email', 0)";
+            $sql_statement = "insert into auctions_thr(email, thr_value, thr_timestamp) values('$email', 0, now())";
 
             try{
                 if ( !mysqli_query($connection, $sql_statement) )
@@ -106,7 +106,7 @@
         $connection = connect_to_database();
 
         $sql_statement = 
-            "select * from auctions_thr order by thr_value";
+            "select * from auctions_thr order by thr_value desc, thr_timestamp";
 
         try{
             if ( !($result = mysqli_query($connection, $sql_statement)) )
@@ -133,7 +133,7 @@
                 $thr_user_email = "No one has already bidden";
             }
             else{
-                $max_thr = $row['thr_value'];
+                $max_thr = MIN_THR;
                 $thr_user_email = $row['email'];
             }
         }
@@ -145,6 +145,7 @@
             while($row = mysqli_fetch_assoc($result)){
                 if ( $i == 0)
                     $first_row = $row;
+
                 if ( $i == 1){
                     $second_row = $row;
                     break;
@@ -153,17 +154,19 @@
                 $i++;
             }
 
-            if ($second_row['thr_value'] > 0){
-                $max_thr = $second_row['thr_value'];
-                $thr_user_email = $second_row['email'];
-            }
-            else if ($first_row['thr_value'] > 0){
-                $max_thr = $first_row['thr_value'];
-                $thr_user_email = $first_row['email'];
-            }
-            else{
+            if( $first_row['thr_value'] == 0 ){
                 $max_thr = MIN_THR;
                 $thr_user_email = "No one has already bidden";
+            }
+            else{
+                if ( $second_row['thr_value'] == 0 ){
+                    $max_thr = MIN_THR;
+                    $thr_user_email = $first_row['email'];
+                }
+                else{
+                    $max_thr = $second_row['thr_value'] + 0.01;
+                    $thr_user_email = $first_row['email'];
+                }
             }
 
         }
@@ -201,7 +204,7 @@
         $res = $row['thr_value'];
 
         if ( $res == 0){
-            $res = "You have not bidden yet";
+            $res = "You have not set your THR yet";
         }
 
         mysqli_free_result($result);

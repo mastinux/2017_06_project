@@ -8,7 +8,7 @@
         set_https();
     }
     else{
-        redirect_with_message('index.php', 'w', 'You must be logged in to update your thr.');
+        redirect_with_message('index.php', 'w', 'You must be logged in to update your THR.');
     }
 
     check_enabled_cookies();
@@ -18,20 +18,23 @@
 
     switch($_SERVER['REQUEST_METHOD']) {
         case 'GET': {
-            redirect_with_message("index.php", "w", "Update thr must be a post method.");
+            redirect_with_message("index.php", "w", "Update THR must be a post method.");
             break;
         }
         case 'POST': {
             if ( !isset($_POST['thr']) )
-                redirect_with_message("index.php", "w", "Thr value not set in form.");
+                redirect_with_message("index.php", "w", "THR value not set in form.");
             $thr_value = $_POST['thr'];
             break;
         }
     }
 
-    if ( $thr_value < get_max_bid()[0] )
-        redirect_with_message('index.php', 'w', 'Thr must be greather than current max thr.');
+    if ( $thr_value <= get_max_bid()[0] )
+        redirect_with_message('index.php', 'w', 'THR set must be greather than highest BID.');
 
+    // TODO check if thr_value is a multiple of 0.01
+
+    /*
     $user_thr_value = get_user_thr($username); 
 
     if ( is_numeric($user_thr_value) ){
@@ -42,8 +45,9 @@
         if ( $thr_value < MIN_THR )
             redirect_with_message('index.php', 'w', 'Thr must be greather than current max thr.');
     }
+    */
 
     update_user_thr($username, $thr_value);
 
-    redirect_with_message("index.php", "s", "Thr updated successfully.")
+    redirect_with_message("index.php", "s", "THR updated successfully.");
 ?>

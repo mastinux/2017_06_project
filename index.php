@@ -43,7 +43,7 @@
         include 'navbar.php';
         include 'no_script_messages.html';
         manage_messages();
-        list($max_thr, $max_thr_email) = get_max_bid(); // to be implemented
+        list($max_thr, $max_thr_email) = get_max_bid();
         $user_max_thr = get_user_thr($username);
     ?>
 
@@ -103,14 +103,36 @@
                     <div class="panel-body">
                         <p>Your current THR: <?php echo $user_max_thr; ?></p>
 
-                        <form method="post" action="thr_update.php">
+                        <?php 
+                            if( is_numeric($user_max_thr) ){
+                                if ($username == $max_thr_email){ 
+                        ?>
+                                <div class="alert alert-success" role="alert">You are the best bidder.</div>
+                        <?php 
+                                }else{
+                        ?>
+                            <div class="alert alert-danger" role="alert">Your THR has been overcome.</div>
+                        <?php
+                                }
+                            }
+                            else{
+                        ?>
+                            <div class="alert alert-info" role="alert">Set your first THR.</div>
+                        <?php        
+                            }
+                        ?>
+
+                        <form method="post" action="thr_update.php" onsubmit="return check_thr()">
                             <!-- TODO check greater than current thr value by id -->
                             <div class="input-group">
                                 <span class="input-group-addon">€</span>
-                                <input type="number" name="thr" min="<?php echo $max_bid ?>" value="<?php echo $user_max_thr + 0.01 ?>" step="0.01" class="form-control text-right">
+
+                                <input id="user_input" type="number" name="thr" min="<?php echo $max_bid ?>" value="<?php echo ($max_thr + 0.01) ?>" step="0.01" class="form-control text-right">
+
                                 <div class="input-group-btn">
                                    <button type="submit" class="btn btn-default">Submit</button> 
                                 </div>
+                                
                             </div>
                         </form>
 
@@ -125,7 +147,9 @@
                     <h3 class="panel-title">Highest BID</h3>
                 </div>
                 <div class="panel-body">
-                    <p>BID: <?php echo $max_thr; ?> </p>
+                    <p>BID: <?php echo $max_thr; ?></p>
+                    <input id="max_bid" hidden="true" value="<?php echo $max_thr; ?>">
+
                     <p>User: <?php echo $max_thr_email; ?> </p>
                 </div>
             </div>
