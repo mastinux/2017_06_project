@@ -13,15 +13,20 @@ create table auctions_user(
 create table auctions_thr(
     email varchar(320) not null,
     thr_value decimal(10,2) not null,
-    thr_timestamp timestamp not null,
+    thr_timestamp timestamp not null,   /* updated every time the record is changed */
     primary key(email), 
     foreign key (email) references auctions_user(email) on delete cascade
 );
 alter table auctions_thr add constraint auctions_thr_constraint check(thr_value>1);
 
-insert into auctions_user values('a@p.it', md5('p1'));
-insert into auctions_user values('b@p.it', md5('p2'));
-insert into auctions_user values('c@p.it', md5('p3'));
+insert into auctions_user(email, pw) values('a@p.it', md5('p1'));
+insert into auctions_user(email, pw) values('b@p.it', md5('p2'));
+insert into auctions_user(email, pw) values('c@p.it', md5('p3'));
+
+
+insert into auctions_thr(email, thr_value, thr_timestamp) values('a@p.it', 0.0, now());
+insert into auctions_thr(email, thr_value, thr_timestamp) values('b@p.it', 0.0, now());
+insert into auctions_thr(email, thr_value, thr_timestamp) values('c@p.it', 0.0, now());
 
 /*
 create table c_comment(

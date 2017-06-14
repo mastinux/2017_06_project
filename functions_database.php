@@ -225,6 +225,8 @@
         $thr_value = sanitize_string($thr_value);
         $thr_value = mysqli_real_escape_string($connection, $thr_value);
 
+        //sleep(60);
+
         try {
             // preparing query
             $sql_statement="update auctions_thr set thr_value = '$thr_value' where email = '$username'";

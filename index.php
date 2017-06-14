@@ -54,9 +54,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?php if ($username){?>
-                        Your Account
+                        <h2 class="panel-title">Your Account</h2>
                     <?php }else{?>
-                        Log in or Register
+                        <h2 class="panel-title">Log in or Register</h2>
                     <?php }?>
                 </div>
                 <div class="panel-body">
@@ -98,7 +98,7 @@
             <?php if($username){ ?>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Update your THR
+                        <h2 class="panel-title">Update your THR</h2>
                     </div>
                     <div class="panel-body">
                         <p>Your current THR: <?php echo $user_max_thr; ?></p>
@@ -144,7 +144,7 @@
         <div class="col-lg-8">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Highest BID</h3>
+                    <h2 class="panel-title">Highest BID</h2>
                 </div>
                 <div class="panel-body">
                     <p>BID: <?php echo $max_thr; ?></p>
