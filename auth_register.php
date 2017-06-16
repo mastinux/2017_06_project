@@ -31,19 +31,15 @@
     else{
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             // checking unique email
-
-
-            //redirect_with_message("index.php", "i", "checking " . $email . ".");
             check_new_user($email);
-            //redirect_with_message("index.php", "i", $email . " checked.");
 
             if ( strcmp($password, $password_repeated) == 0){
+                // checking password contains at least one char and one number
                 if( !preg_match("/[A-Za-z]+[0-9]+/", $password) ){
                     redirect_with_message("auth_login.php", "w", "Password must contain at least one character and one number.");
                 }
                 else{
                     // valid email and password
-
                     insert_new_user($email, $password);
 
                     session_start();

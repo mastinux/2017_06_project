@@ -32,20 +32,8 @@
     if ( $thr_value <= get_max_bid()[0] )
         redirect_with_message('index.php', 'w', 'THR set must be greather than highest BID.');
 
-    // TODO check if thr_value is a multiple of 0.01
-
-    /*
-    $user_thr_value = get_user_thr($username); 
-
-    if ( is_numeric($user_thr_value) ){
-        if ( $thr_value < $user_thr_value )
-            redirect_with_message('index.php', 'w', 'Thr must be greather than your current thr.');
-    }
-    else{
-        if ( $thr_value < MIN_THR )
-            redirect_with_message('index.php', 'w', 'Thr must be greather than current max thr.');
-    }
-    */
+    if ( strlen(substr(strrchr($thr_value, "."), 1)) > 2 )
+        redirect_with_message('index.php', 'w', 'THR must be a multiple of 0.01.');
 
     update_user_thr($username, $thr_value);
 

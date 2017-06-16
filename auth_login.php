@@ -39,7 +39,7 @@
         manage_messages();
     ?>
 
-    <div class="col-lg-6 col-md-6">
+    <div class="col-lg-6 col-md-6 col-sm-6">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -47,18 +47,6 @@
                 </div>
                 <div class="panel-body">
                         <form id="register-form" method="post" action="auth_register.php" onsubmit="return register()">
-<!--
-                            <div class="input-group">
-                                <span class="input-group-addon">name</span>
-                                <input id="new-name" name="name" type="text" class="form-control" placeholder="name" aria-describedby="basic-addon1">
-                            </div>
-                            <br>
-                            <div class="input-group">
-                                <span class="input-group-addon">surname</span>
-                                <input id="new-surname" name="surname" type="text" class="form-control" placeholder="surname" aria-describedby="basic-addon1">
-                            </div>
-                            <br>
--->
                             <div class="input-group">
                                 <span class="input-group-addon">email</span>
                                 <input id="new-email" name="email" type="text" class="form-control" placeholder="email" aria-describedby="basic-addon1">
@@ -82,7 +70,7 @@
             </div>
         </div>
 
-        <div class="col-lg-6  col-md-6">
+        <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Log in</h3>

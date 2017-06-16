@@ -47,9 +47,9 @@
         $user_max_thr = get_user_thr($username);
     ?>
 
-    <div class="col-lg-12">
+    <div class="col-lg-12 col-md-12 col-sm-12">
 
-        <div class="col-lg-4">
+        <div class="col-lg-4 col-md-4 col-sm-4" id="left-panel">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -122,17 +122,37 @@
                             }
                         ?>
 
+                        <!--
                         <form method="post" action="thr_update.php" onsubmit="return check_thr()">
-                            <!-- TODO check greater than current thr value by id -->
                             <div class="input-group">
                                 <span class="input-group-addon">€</span>
-
-                                <input id="user_input" type="number" name="thr" min="<?php echo $max_bid ?>" value="<?php echo ($max_thr + 0.01) ?>" step="0.01" class="form-control text-right">
+                                <input id="user_input" type="number" name="thr" step="0.01" min="<?php echo $max_bid ?>" value="<?php echo ($max_thr + 0.01) ?>" class="form-control text-right">
 
                                 <div class="input-group-btn">
                                    <button type="submit" class="btn btn-default">Submit</button> 
                                 </div>
                                 
+                            </div>
+                        </form>
+                        -->
+
+                        <form class="form-inline" method="post" action="thr_update.php" onsubmit="return check_thr()">
+                            <div class="form-group">
+
+                                <label for="thr">THR</label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-addon">€</span>
+
+                                    <input id="user_input" type="number" name="thr" step="0.01" min="<?php echo $max_bid ?>" value="<?php echo ($max_thr + 0.01) ?>" class="form-control text-right">
+
+                                    <div class="input-group-btn">
+                                       <button type="submit" class="btn btn-default">Submit</button> 
+                                    </div>
+                                    
+                                </div>
+
                             </div>
                         </form>
 
@@ -141,16 +161,31 @@
             <? } ?>
         </div>
 
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-md-8 col-sm-8" id="right-panels">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h2 class="panel-title">Highest BID</h2>
                 </div>
                 <div class="panel-body">
-                    <p>BID: <?php echo $max_thr; ?></p>
                     <input id="max_bid" hidden="true" value="<?php echo $max_thr; ?>">
-
+                    <!--
+                    <p>BID: <?php echo $max_thr; ?></p>
                     <p>User: <?php echo $max_thr_email; ?> </p>
+                    -->
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th>BID value</th>
+                            <th>User</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td><?php echo $max_thr; ?></td>
+                            <td><?php echo $max_thr_email; ?></td>
+                          </tr>
+                        </tbody>
+                    </table>  
                 </div>
             </div>
         </div>
@@ -158,12 +193,13 @@
     </div>
 
     <script type="text/javascript">
+
         if (navigator.cookieEnabled == false) {
-            // preventing site usage
+            // avoiding site usage
             removeElementById('left-panel');
             removeElementById('right-panels');
-            // printCookieDisabledMessage();
         }
+
     </script>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
