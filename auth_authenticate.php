@@ -65,7 +65,7 @@
                 redirect_with_message("index.php", "s", "Logged in as " . $username . ".");
             }
             else {
-                redirect_with_message("auth_login.php", "d", "Invalid username or password inserted in login form.");
+                redirect_with_message("auth_login.php", "d", "Unknown email or wrong password.");
             }
         }
         else{

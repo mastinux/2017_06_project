@@ -46,6 +46,16 @@ function check_thr(){
     var new_value = document.getElementById("user_input").value;
     var max_bid = document.getElementById("max_bid").value;
 
+    if (new_value.indexOf(".") != -1){
+        var digitAfterComma = new_value.substr(new_value.indexOf(".") + 1).length;
+
+        if (digitAfterComma > 2){
+            console.log("not valid");
+            return false;
+        }
+    }
+    console.log("valid");
+
     if (new_value <= max_bid){
         printMessage("warning", "Your new THR must be greater than max BID.");
         new_value = parseFloat(max_bid) + 0.01;

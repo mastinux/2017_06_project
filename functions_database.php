@@ -58,7 +58,7 @@
         if ( $rows == 1 )
             redirect_with_message("auth_login.php", "w", "Email already used.");
     }
-
+    /*
     function insert_new_user($email, $password){
         $success = true;
         $err_msg = "";
@@ -67,9 +67,7 @@
 
         $password = sanitize_string($password);
         $password = mysqli_real_escape_string($connection, $password);
-
-        // TODO make in unique transaction
-        
+ 
         $sql_statement = "insert into auctions_user(email, pw) values('$email', md5('$password'))";
 
         try{
@@ -98,6 +96,44 @@
         if ( !$success )
             redirect_with_message("auth_login.php", "d", $err_msg);
     }
+    */
+    function insert_new_user($email, $password){
+        $success = true;
+        $err_msg = "";
+
+        $connection = connect_to_database();
+
+        $username = sanitize_string($username);
+        $username = mysqli_real_escape_string($connection, $username);
+
+        try {
+            mysqli_autocommit($connection,false);
+
+            $sql_statement = "insert into auctions_user(email, pw) values('$email', md5('$password'))";
+
+            if ( !mysqli_query($connection, $sql_statement) )
+                    throw new Exception("Problems while registering new user (phase 1), please register again.");
+
+            $sql_statement = "insert into auctions_thr(email, thr_value) values('$email', 0)";
+
+            if ( !mysqli_query($connection, $sql_statement) )
+                    throw new Exception("Problems while registering new user (phase 2), please register again.");
+
+            if ( !mysqli_commit($connection) )
+                throw new Exception("Commit failed.");
+        }
+        catch (Exception $e){
+            mysqli_rollback($connection);
+
+            $success = false;
+            $err_msg = $e->getMessage();
+        }
+
+        mysqli_close($connection);
+
+        if( !$success )
+            redirect_with_message("index.php", "d", $err_msg);
+    }
 
     function get_max_bid(){
         $success = true;
@@ -105,8 +141,7 @@
 
         $connection = connect_to_database();
 
-        $sql_statement = 
-            "select * from auctions_thr order by thr_value desc, thr_timestamp";
+        $sql_statement = "select * from auctions_thr order by thr_value desc, thr_timestamp";
 
         try{
             if ( !($result = mysqli_query($connection, $sql_statement)) )
@@ -224,8 +259,6 @@
 
         $thr_value = sanitize_string($thr_value);
         $thr_value = mysqli_real_escape_string($connection, $thr_value);
-
-        //sleep(60);
 
         try {
             // preparing query

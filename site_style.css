@@ -14,3 +14,13 @@ div.no-script-info {
     background: #66ccff;
     text-align: center;
 }
+
+.bestbid {
+	color: #009900;
+    font-weight: bold;
+}
+
+.notbestbid{
+	color: #b30000;
+    font-weight: bold;
+}

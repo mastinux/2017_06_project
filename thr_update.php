@@ -30,7 +30,7 @@
     }
 
     if ( $thr_value <= get_max_bid()[0] )
-        redirect_with_message('index.php', 'w', 'THR set must be greather than highest BID.');
+        redirect_with_message('index.php', 'w', 'Your new THR must be greater than max BID.');
 
     if ( strlen(substr(strrchr($thr_value, "."), 1)) > 2 )
         redirect_with_message('index.php', 'w', 'THR must be a multiple of 0.01.');

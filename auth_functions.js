@@ -52,7 +52,7 @@ function login() {
 
     // checking empty values
     if ( !username || !password ){
-        console.log("Username or password not inserted in login form.");
+        console.log("Email or password not inserted in login form.");
         printMessage("warning", "Username or password not inserted in login form.");
         return false;
     }

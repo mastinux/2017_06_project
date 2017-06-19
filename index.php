@@ -102,22 +102,33 @@
                     </div>
                     <div class="panel-body">
                         <p>Your current THR: <?php echo $user_max_thr; ?></p>
-
+<!--
+                        <p>
+                            <label class="bestbid">success</label><br>
+                            <label class="notbestbid">overcome</label><br>
+                        </p>
+-->
                         <?php 
                             if( is_numeric($user_max_thr) ){
                                 if ($username == $max_thr_email){ 
                         ?>
-                                <div class="alert alert-success" role="alert">You are the best bidder.</div>
+                                <div class="alert alert-success bestbid" role="alert">
+                                    You are the best bidder.
+                                </div>
                         <?php 
                                 }else{
                         ?>
-                            <div class="alert alert-danger" role="alert">Your THR has been overcome.</div>
+                            <div class="alert alert-danger notbestbid" role="alert">
+                                Your THR has been overcome.
+                            </div>
                         <?php
                                 }
                             }
                             else{
                         ?>
-                            <div class="alert alert-info" role="alert">Set your first THR.</div>
+                            <div class="alert alert-info" role="alert">
+                                Set your first THR.
+                            </div>
                         <?php        
                             }
                         ?>
@@ -145,7 +156,7 @@
 
                                     <span class="input-group-addon">€</span>
 
-                                    <input id="user_input" type="number" name="thr" step="0.01" min="<?php echo $max_bid ?>" value="<?php echo ($max_thr + 0.01) ?>" class="form-control text-right">
+                                    <input id="user_input" step="0.01" type="number" name="thr" min="<?php echo $max_bid ?>" value="<?php echo ($max_thr + 0.01) ?>" class="form-control text-right">
 
                                     <div class="input-group-btn">
                                        <button type="submit" class="btn btn-default">Submit</button> 
@@ -176,7 +187,7 @@
                         <thead>
                           <tr>
                             <th>BID value</th>
-                            <th>User</th>
+                            <th>BID User</th>
                           </tr>
                         </thead>
                         <tbody>
