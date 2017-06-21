@@ -32,9 +32,6 @@
 
     <link href="site_style.css" rel="stylesheet" type="text/css"/>
     <script type="text/javascript" src="site_functions.js"></script>
-<!--
-    <script type="text/javascript" src="z_shares_functions.js"></script>
--->
 </head>
 
 <body>
@@ -102,12 +99,7 @@
                     </div>
                     <div class="panel-body">
                         <p>Your current THR: <?php echo $user_max_thr; ?></p>
-<!--
-                        <p>
-                            <label class="bestbid">success</label><br>
-                            <label class="notbestbid">overcome</label><br>
-                        </p>
--->
+
                         <?php 
                             if( is_numeric($user_max_thr) ){
                                 if ($username == $max_thr_email){ 
@@ -132,20 +124,6 @@
                         <?php        
                             }
                         ?>
-
-                        <!--
-                        <form method="post" action="thr_update.php" onsubmit="return check_thr()">
-                            <div class="input-group">
-                                <span class="input-group-addon">€</span>
-                                <input id="user_input" type="number" name="thr" step="0.01" min="<?php echo $max_bid ?>" value="<?php echo ($max_thr + 0.01) ?>" class="form-control text-right">
-
-                                <div class="input-group-btn">
-                                   <button type="submit" class="btn btn-default">Submit</button> 
-                                </div>
-                                
-                            </div>
-                        </form>
-                        -->
 
                         <form class="form-inline" method="post" action="thr_update.php" onsubmit="return check_thr()">
                             <div class="form-group">
@@ -179,10 +157,6 @@
                 </div>
                 <div class="panel-body">
                     <input id="max_bid" hidden="true" value="<?php echo $max_thr; ?>">
-                    <!--
-                    <p>BID: <?php echo $max_thr; ?></p>
-                    <p>User: <?php echo $max_thr_email; ?> </p>
-                    -->
                     <table class="table">
                         <thead>
                           <tr>

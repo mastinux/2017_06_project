@@ -6,9 +6,6 @@
     set_https();
     check_enabled_cookies();
 
-    //$success = true;
-    //$err_msg = "";
-
     switch($_SERVER['REQUEST_METHOD']) {
         case 'GET': {
             redirect_with_message("auth_login.php", "w", "Register action must be a post method.");

@@ -17,6 +17,7 @@ function printMessage(type, msg) {
     navbar.parentNode.insertBefore(div, navbar.nextElementSibling);
 
     var textDiv = document.createElement("div");
+    textDiv.setAttribute("id", type + "-msg");
     textDiv.setAttribute("class", "alert alert-" + type + " alert-dismissible");
     textDiv.setAttribute("role", "alert");
     textDiv.innerHTML = msg;
@@ -46,17 +47,18 @@ function check_thr(){
     var new_value = document.getElementById("user_input").value;
     var max_bid = document.getElementById("max_bid").value;
 
+    console.log(new_value);
+    console.log(max_bid);
+
     if (new_value.indexOf(".") != -1){
         var digitAfterComma = new_value.substr(new_value.indexOf(".") + 1).length;
 
         if (digitAfterComma > 2){
-            console.log("not valid");
             return false;
         }
     }
-    console.log("valid");
 
-    if (new_value <= max_bid){
+    if (parseInt(new_value) <= parseInt(max_bid)){
         printMessage("warning", "Your new THR must be greater than max BID.");
         new_value = parseFloat(max_bid) + 0.01;
         document.getElementById("user_input").value = new_value;

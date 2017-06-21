@@ -1,9 +1,9 @@
-function checkEmail(email) {
+function checkEmail(email) { // valid email
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
-function checkPassword(password){
+function checkPassword(password){ // contains at least one character and one number
     var re = /[A-Za-z]+[0-9]+/;
     return re.test(password);
 }
