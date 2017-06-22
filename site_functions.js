@@ -44,27 +44,22 @@ function printCookieDisabledMessage() {
 }
 
 function check_thr(){
-    var new_value = document.getElementById("user_input").value;
-    var max_bid = document.getElementById("max_bid").value;
+    var new_value = parseFloat(document.getElementById("user_input").value);
+    var max_bid = parseFloat(document.getElementById("max_bid").value);
 
-    console.log(new_value);
-    console.log(max_bid);
-
-    if (new_value.indexOf(".") != -1){
-        var digitAfterComma = new_value.substr(new_value.indexOf(".") + 1).length;
-
-        if (digitAfterComma > 2){
-            return false;
-        }
+    if(new_value * 1000 % 10 != 0){
+        printMessage("warning", "THR must be a multiple of 0.01.");
+        return false;
     }
 
-    if (parseInt(new_value) <= parseInt(max_bid)){
+    if (new_value <= max_bid){
+        console.log(new_value, " is lower than ", max_bid);
         printMessage("warning", "Your new THR must be greater than max BID.");
-        new_value = parseFloat(max_bid) + 0.01;
+        new_value = max_bid + 0.01;
         document.getElementById("user_input").value = new_value;
 
         return false;
     }
-    else
-        return true;
+
+    return true;
 }

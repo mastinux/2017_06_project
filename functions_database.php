@@ -56,7 +56,7 @@
             redirect_with_message("auth_login.php", "d", $err_msg);
 
         if ( $rows == 1 )
-            redirect_with_message("auth_login.php", "w", "Email already used.");
+            redirect_with_message("auth_login.php", "w", "Email already registered on this site.");
     }
     
     function insert_new_user($email, $password){
@@ -161,7 +161,10 @@
                     $thr_user_email = $first_row['email'];
                 }
                 else{
-                    $max_thr = $second_row['thr_value'] + 0.01;
+                    if ($first_row['thr_value'] == $second_row['thr_value'])
+                        $max_thr = $first_row['thr_value'];
+                    else
+                        $max_thr = $second_row['thr_value'] + 0.01;
                     $thr_user_email = $first_row['email'];
                 }
             }

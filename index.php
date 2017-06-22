@@ -124,7 +124,6 @@
                         <?php        
                             }
                         ?>
-
                         <form class="form-inline" method="post" action="thr_update.php" onsubmit="return check_thr()">
                             <div class="form-group">
 
@@ -133,8 +132,8 @@
                                 <div class="input-group">
 
                                     <span class="input-group-addon">€</span>
-
-                                    <input id="user_input" step="0.01" type="number" name="thr" min="<?php echo $max_bid ?>" value="<?php echo ($max_thr + 0.01) ?>" class="form-control text-right">
+                                    
+                                    <input id="user_input" name="thr" min="<?php echo ($max_bid + 0.01) ?>" value="<?php echo ($max_thr + 0.01) ?>" class="form-control text-right" step="0.01" type="number">
 
                                     <div class="input-group-btn">
                                        <button type="submit" class="btn btn-default">Submit</button> 
